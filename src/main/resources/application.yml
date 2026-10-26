@@ -1,0 +1,42 @@
+# Self-Healing Distributed Cache — Node Configuration
+# Externalise secrets and environment-specific settings; do not commit sensitive values.
+
+spring:
+  application:
+    name: self-healing-distributed-cache
+
+server:
+  port: 8080
+  # Bounded timeouts prevent slow clients from holding connections indefinitely.
+  tomcat:
+    connection-timeout: 5s
+    max-connections: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true   # exposes /actuator/health/liveness and /actuator/health/readiness
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# Node identity — override via environment variables in Docker Compose.
+# CACHE_NODE_ID and CACHE_NODE_ADVERTISED_ADDRESS are the conventional env var names.
+cache:
+  node:
+    id: ${CACHE_NODE_ID:node-1}
+    advertised-address: ${CACHE_NODE_ADVERTISED_ADDRESS:localhost:8080}
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [nodeId=%X{nodeId}] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.phoenix.cache: DEBUG
