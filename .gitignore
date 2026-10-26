@@ -1,0 +1,43 @@
+# Git ignore file for the Self-Healing Distributed Cache project.
+
+# Internal working documents — not for public repository
+SELF_HEALING_DISTRIBUTED_CACHE_PROJECT_PLAN.md
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Maven wrapper (not used; pinned to system Maven)
+.mvn/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.eclipse/
+.classpath
+.project
+.settings/
+*.swp
+.vscode/
+
+# macOS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets — never commit these
+.env
+*.env
+application-local.yml
+application-secret.yml
+
+# Benchmark output (committed separately after runs)
+benchmarks/results/raw/
+
+# Docker volumes
+data/
